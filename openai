@@ -1,0 +1,33 @@
+{
+  "run": [{
+    "method": "input",
+    "params": {
+      "title": "API Key",
+      "type": "notify",
+      "form": [{
+        "key": "key",
+        "description": "Enter your OpenAI API Key"
+      }]
+    }
+  }, {
+    "method": "set",
+    "params": {
+      "self": {
+        "config.json": {
+          "key": "{{input.key}}"
+        }
+      }
+    }
+  }, {
+    "method": "log",
+    "params": {
+      "text": "Saved.."
+    }
+  }, {
+    "method": "notify",
+    "params": {
+      "html": "Success! API key saved to config.json. Click to close the window.",
+      "action": "close"
+    }
+  }]
+}
