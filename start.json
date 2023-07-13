@@ -1,0 +1,59 @@
+{
+    "run": [
+        {
+            "method": "input",
+            "params": {
+                "title": "Setup",
+                "form": [
+                    {
+                        "key": "create_venv",
+                        "title": "Create virtualenv",
+                        "description": "Command to create virtualenv",
+                        "default": "python3 -m venv .langflow_venv"
+                    },
+                    {
+                        "key": "activate_command",
+                        "title": "Activate virtualenv",
+                        "description": "Command to activate virtualenv",
+                        "default": "source .langflow_venv/bin/activate"
+                    }
+                ]
+            }
+        },
+        {
+            "method": "local.set",
+            "params": {
+                "create_venv": "{{input.create_venv}}",
+                "activate_command": "{{input.activate_command}}"
+            }
+        },
+        {
+            "method": "shell.start"
+        },
+        {
+            "method": "shell.run",
+            "params": {
+                "message": "{{local.create_venv}}"
+            }
+        },
+        {
+            "method": "shell.run",
+            "params": {
+                "message": "{{local.activate_command}}"
+            }
+        },
+        {
+            "method": "shell.run",
+            "params": {
+                "message": "python -m pip install langflow -U && python -m langflow"
+            }
+        },
+        {
+            "method": "browser.open",
+            "params": {
+                "uri": "http://localhost:7860",
+                "target": "_blank"
+            }
+        }
+    ]
+}
