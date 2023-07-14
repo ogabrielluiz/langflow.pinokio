@@ -31,21 +31,33 @@
             "method": "shell.start"
         },
         {
-            "method": "shell.run",
+            "method": "shell.enter",
             "params": {
-                "message": "{{local.create_venv}}"
+                "message": "{{local.create_venv}}",
+                "on": [{
+                    "event": null,
+                    "return": true
+                }]
+            }
+        },
+        {
+            "method": "shell.enter",
+            "params": {
+                "message": "{{local.activate_command}}",
+                "on": [{
+                    "event": null,
+                    "return": true
+                }]
             }
         },
         {
             "method": "shell.run",
             "params": {
-                "message": "{{local.activate_command}}"
-            }
-        },
-        {
-            "method": "shell.run",
-            "params": {
-                "message": "python -m pip install langflow -U && python -m langflow"
+                "message": "python -m pip install langflow -U && python -m langflow",
+                "on": [{
+                    "event": null,
+                    "return": true
+                }]
             }
         },
         {
