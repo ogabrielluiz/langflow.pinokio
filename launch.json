@@ -1,0 +1,34 @@
+{
+    "run": [
+        {
+            "method": "shell.start"
+        },
+        {
+            "method": "shell.enter",
+            "params": {
+                "message": "{{self.config.activate_command}}",
+                "on": [{
+                    "event": null,
+                    "return": true
+                }]
+            }
+        },
+        {
+            "method": "shell.enter",
+            "params": {
+                "message": "python -m langflow",
+                "on": [{
+                    "event": "/Access (http[0-9\/.:]+)/",
+                    "return": "{{event.matches[0][1]}}"
+                }]
+            }
+        },
+        {
+            "method": "browser.open",
+            "params": {
+                "uri": "{{input}}",
+                "target": "_blank"
+            }
+        }
+    ]
+}

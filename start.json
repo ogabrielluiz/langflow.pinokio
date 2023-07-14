@@ -9,22 +9,24 @@
                         "key": "create_venv",
                         "title": "Create virtualenv",
                         "description": "Command to create virtualenv",
-                        "default": "python3 -m venv .langflow_venv"
+                        "default": "python -m venv .langflow_venv"
                     },
                     {
                         "key": "activate_command",
                         "title": "Activate virtualenv",
                         "description": "Command to activate virtualenv",
-                        "default": "source .langflow_venv/bin/activate"
+                        "default": "{{os.platform() === 'win32' ? '.langflow_venv\\\\Scripts\\\\activate' : 'source .langflow_venv/bin/activate'}}"
                     }
                 ]
             }
         },
         {
-            "method": "local.set",
+            "method": "self.set",
             "params": {
-                "create_venv": "{{input.create_venv}}",
-                "activate_command": "{{input.activate_command}}"
+                "config.json": {
+                  "create_venv": "{{input.create_venv}}",
+                  "activate_command": "{{input.activate_command}}"
+                }
             }
         },
         {
@@ -33,7 +35,7 @@
         {
             "method": "shell.enter",
             "params": {
-                "message": "{{local.create_venv}}",
+                "message": "{{self.config.create_venv}}",
                 "on": [{
                     "event": null,
                     "return": true
@@ -43,7 +45,7 @@
         {
             "method": "shell.enter",
             "params": {
-                "message": "{{local.activate_command}}",
+                "message": "{{self.config.activate_command}}",
                 "on": [{
                     "event": null,
                     "return": true
@@ -51,19 +53,29 @@
             }
         },
         {
-            "method": "shell.run",
+            "method": "shell.enter",
             "params": {
-                "message": "python -m pip install langflow -U && python -m langflow",
+                "message": "python -m pip install langflow -U",
                 "on": [{
-                    "event": null,
-                    "return": true
+                  "event": null,
+                  "return": true
+                }]
+            }
+        },
+        {
+            "method": "shell.enter",
+            "params": {
+                "message": "python -m langflow",
+                "on": [{
+                    "event": "/Access (http[0-9\/.:]+)/",
+                    "return": "{{event.matches[0][1]}}"
                 }]
             }
         },
         {
             "method": "browser.open",
             "params": {
-                "uri": "http://localhost:7860",
+                "uri": "{{input}}",
                 "target": "_blank"
             }
         }
