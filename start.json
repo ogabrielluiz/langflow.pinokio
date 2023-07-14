@@ -78,6 +78,9 @@
                 "uri": "{{input}}",
                 "target": "_blank"
             }
+        },
+        {
+            "method": "process.wait"
         }
     ]
 }
